@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
-struct plantoApp: App {
+struct PlantoApp: App {
+    @StateObject private var store = PlantsStore()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(store)
         }
     }
 }
