@@ -23,6 +23,7 @@ struct PlantsListView: View {
 
     var body: some View {
         ZStack {
+            Color.black.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 14) {
                 // MARK: Header
@@ -75,13 +76,13 @@ struct PlantsListView: View {
                 }
                 .padding(.top, 18)
 
-                // MARK: Plants List (يدعم السحب للحذف)
+                // MARK: Plants List
                 List {
                     ForEach(store.plants) { plant in
                         PlantRowView(
                             plant: plant,
                             onToggle: {
-                                store.toggleWatered(for: plant)   // لا نحرك النص
+                                store.toggleWatered(for: plant)
                                 checkDone()
                             },
                             onTapName: {
@@ -112,7 +113,7 @@ struct PlantsListView: View {
             }
             .padding(.horizontal, 20)
 
-            // MARK: Floating Add Button (نفس DoneView)
+            // MARK: Floating Add Button
             VStack {
                 Spacer()
                 HStack {
@@ -132,7 +133,6 @@ struct PlantsListView: View {
             }
         }
         .onAppear { store.refreshDueWatering() }
-        // إضافة من أسفل
         .sheet(isPresented: $showAdd) {
             ReminderView(
                 isPresented: $showAdd,
@@ -142,10 +142,10 @@ struct PlantsListView: View {
                 },
                 onCancelToContent: { showAdd = false }
             )
-            .presentationDetents([.medium, .large])
+            .presentationDetents([.large])
             .presentationDragIndicator(.visible)
+            .presentationBackground(.black)
         }
-        // تعديل من أسفل
         .sheet(isPresented: $showEdit) {
             if let editingPlant {
                 EditPlantView(
@@ -159,14 +159,13 @@ struct PlantsListView: View {
                         showEdit = false
                     }
                 )
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
+                .presentationBackground(.black)
             }
         }
-        // Done تلقائي بدون أنيميشن
         .fullScreenCover(isPresented: $showDone) {
             DoneView {
-                // زر + يرجع يفتح إضافة نبتة ويرجع من الدَن
                 showDone = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     showAdd = true
@@ -177,7 +176,6 @@ struct PlantsListView: View {
     }
 
     private func checkDone() {
-        // إذا كلهم checked يظهر Done بدون أنيميشن
         if store.allWatered() {
             showDone = true
         } else {

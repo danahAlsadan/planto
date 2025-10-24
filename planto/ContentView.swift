@@ -8,18 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    // لا تغيير بصري — فقط ربط
-    @State private var showHome = false               // يفتح Reminder كـ sheet من تحت
-    @State private var showList = false               // يفتح اللِست بعد الحفظ
+    @State private var showHome = false
+    @State private var showList = false
     @EnvironmentObject private var store: PlantsStore
 
     var body: some View {
         ZStack {
-
             if showHome {
-                // نستخدم sheet بدل إدراج مباشر للحفاظ على الباكقراوند ثابت
             } else {
-                // العنوان فقط (خارج الـ VStack الأصلي)
                 VStack {
                     Text("My Plants 🌱")
                         .font(.title)
@@ -37,7 +33,6 @@ struct ContentView: View {
                     Spacer()
                 }
 
-                // الكود الأصلي بالضبط بدون أي تغيير بصري
                 VStack(spacing: 24) {
                     Image("plant_icon")
                         .resizable()
@@ -70,31 +65,41 @@ struct ContentView: View {
                 }
             }
         }
-        // Reminder يظهر من تحت لفوق كبروحة (الخلفية ثابتة)
         .sheet(isPresented: $showHome) {
             ReminderView(
                 isPresented: $showHome,
                 onSave: { newPlant in
                     store.addPlant(newPlant)
-                    // بعد الحفظ ينزل الشيت ويظهر اللست مباشرة بدون تحريك الخلفية
                     showHome = false
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                         showList = true
                     }
                 },
                 onCancelToContent: {
-                    // زر X في البداية يرجع فقط لـ ContentView
                     showHome = false
                 }
             )
-            .presentationDetents([.medium, .large]) // لا يغيّر مقاسات المحتوى
+            .presentationDetents([.fraction(0.99)])
             .presentationDragIndicator(.visible)
+            .interactiveDismissDisabled(false)
         }
-        // بعد أول إضافة نفتح اللست
         .fullScreenCover(isPresented: $showList) {
             PlantsListView()
                 .environmentObject(store)
         }
+    }
+}
+
+private extension Color {
+    init(hex: String) {
+        let s = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: s).scanHexInt64(&int)
+        self.init(
+            red: Double((int >> 16) & 0xFF)/255,
+            green: Double((int >> 8) & 0xFF)/255,
+            blue: Double(int & 0xFF)/255
+        )
     }
 }
 

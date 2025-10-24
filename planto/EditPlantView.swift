@@ -14,25 +14,16 @@ struct EditPlantView: View {
     var onSave: (Plant) -> Void = { _ in }
     var onDelete: () -> Void = {}
 
-    @State private var plantName: String
-    @State private var room: String
-    @State private var light: String
-    @State private var wateringDays: String
-    @State private var waterAmount: String
-
-    init(plant: Plant, onSave: @escaping (Plant) -> Void = { _ in }, onDelete: @escaping () -> Void = {}) {
-        self.plant = plant
-        self.onSave = onSave
-        self.onDelete = onDelete
-        _plantName = State(initialValue: plant.name)
-        _room = State(initialValue: plant.room)
-        _light = State(initialValue: plant.light)
-        _wateringDays = State(initialValue: plant.wateringDays)
-        _waterAmount = State(initialValue: plant.water)
-    }
+    @State private var plantName: String = ""
+    @State private var room: String = ""
+    @State private var light: String = ""
+    @State private var wateringDays: String = ""
+    @State private var waterAmount: String = ""
 
     var body: some View {
         ZStack {
+            Color(UIColor.systemBackground).ignoresSafeArea()
+
             VStack(spacing: 30) {
                 // MARK: - Header
                 HStack {
@@ -105,7 +96,7 @@ struct EditPlantView: View {
                     VStack(spacing: 0) {
                         MenuRow(icon: "drop", label: "Watering Days", selection: $wateringDays,
                                 options: ["Every day", "Every 2 days", "Every 3 days",
-                                          "Once a week", "Every 10 days", "Every 2 weeks"])
+                                         "Once a week", "Every 10 days", "Every 2 weeks"])
                         Divider().background(.primary.opacity(0.1))
                         MenuRow(icon: "drop", label: "Water", selection: $waterAmount,
                                 options: ["10–20 ml", "20–50 ml", "50–100 ml", "100–200 ml"])
@@ -130,6 +121,13 @@ struct EditPlantView: View {
                 Spacer()
             }
             .padding(.horizontal, 20)
+        }
+        .onAppear {
+            plantName = plant.name
+            room = plant.room
+            light = plant.light
+            wateringDays = plant.wateringDays
+            waterAmount = plant.water
         }
     }
 }
