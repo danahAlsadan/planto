@@ -22,7 +22,6 @@ struct EditPlantView: View {
 
     var body: some View {
         ZStack {
-            Color(UIColor.systemBackground).ignoresSafeArea()
 
             VStack(spacing: 30) {
                 // MARK: - Header
@@ -31,7 +30,7 @@ struct EditPlantView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(.white)
                             .font(.system(size: 18, weight: .semibold))
-                            .frame(width: 44, height: 44)
+                            .frame(width: 40, height: 40)
                             .background(Color(white: 0.2))
                             .clipShape(Circle())
                     }
@@ -41,6 +40,7 @@ struct EditPlantView: View {
                     Text("Set Reminder")
                         .font(.headline)
                         .foregroundColor(.primary)
+                     
 
                     Spacer()
 
@@ -57,12 +57,12 @@ struct EditPlantView: View {
                         Image(systemName: "checkmark")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
-                            .frame(width: 44, height: 44)
+                            .frame(width: 40, height: 40)
                             .background(Color(hex: "22BA8C"))
                             .clipShape(Circle())
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 5)
                 .padding(.top, 15)
 
                 // MARK: - Plant Name

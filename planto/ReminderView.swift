@@ -33,7 +33,7 @@ struct ReminderView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(.white)
                             .font(.system(size: 18, weight: .semibold))
-                            .frame(width: 44, height: 44)
+                            .frame(width: 40, height: 40)
                             .background(Color(white: 0.2))
                             .clipShape(Circle())
                     }
@@ -60,7 +60,7 @@ struct ReminderView: View {
                         Image(systemName: "checkmark")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
-                            .frame(width: 44, height: 44)
+                            .frame(width: 40, height: 40)
                             .background(Color(hex: "22BA8C"))
                             .clipShape(Circle())
                     }

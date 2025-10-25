@@ -142,6 +142,7 @@ struct PlantsListView: View {
             )
             .presentationDetents([.fraction(0.95)])
             .presentationDragIndicator(.visible)
+            .presentationCornerRadius(40)
             .interactiveDismissDisabled(false)
         }
         .sheet(item: $editingPlant) { plant in
@@ -158,6 +159,7 @@ struct PlantsListView: View {
             )
             .presentationDetents([.fraction(0.95)])
             .presentationDragIndicator(.visible)
+            .presentationCornerRadius(40)
             .interactiveDismissDisabled(false)
         }
         .fullScreenCover(isPresented: $showDone) {
