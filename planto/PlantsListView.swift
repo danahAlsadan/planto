@@ -10,7 +10,6 @@ struct PlantsListView: View {
     @EnvironmentObject private var store: PlantsStore
 
     @State private var showAdd = false
-    @State private var showEdit = false
     @State private var editingPlant: Plant? = nil
     @State private var showDone = false
 
@@ -87,7 +86,6 @@ struct PlantsListView: View {
                             },
                             onTapName: {
                                 editingPlant = plant
-                                showEdit = true
                             }
                         )
                         .listRowBackground(Color.black)
@@ -142,27 +140,25 @@ struct PlantsListView: View {
                 },
                 onCancelToContent: { showAdd = false }
             )
-            .presentationDetents([.large])
+            .presentationDetents([.fraction(0.95)])
             .presentationDragIndicator(.visible)
-            .presentationBackground(.black)
+            .interactiveDismissDisabled(false)
         }
-        .sheet(isPresented: $showEdit) {
-            if let editingPlant {
-                EditPlantView(
-                    plant: editingPlant,
-                    onSave: { updated in
-                        store.updatePlant(updated)
-                        showEdit = false
-                    },
-                    onDelete: {
-                        store.deletePlant(editingPlant)
-                        showEdit = false
-                    }
-                )
-                .presentationDetents([.large])
-                .presentationDragIndicator(.visible)
-                .presentationBackground(.black)
-            }
+        .sheet(item: $editingPlant) { plant in
+            EditPlantView(
+                plant: plant,
+                onSave: { updated in
+                    store.updatePlant(updated)
+                    editingPlant = nil
+                },
+                onDelete: {
+                    store.deletePlant(plant)
+                    editingPlant = nil
+                }
+            )
+            .presentationDetents([.fraction(0.95)])
+            .presentationDragIndicator(.visible)
+            .interactiveDismissDisabled(false)
         }
         .fullScreenCover(isPresented: $showDone) {
             DoneView {
