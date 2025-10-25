@@ -40,7 +40,7 @@ struct PlantsListView: View {
                 // MARK: Status + Progress
                 VStack(alignment: .leading, spacing: 14) {
                     if lovedCount == 0 {
-                        Text("Your plants are waiting for a sip 💧")
+                        Text("Your plants are waiting for a sip 💦")
                             .foregroundColor(.white.opacity(0.9))
                             .font(.subheadline.bold())
                             .frame(maxWidth: .infinity)

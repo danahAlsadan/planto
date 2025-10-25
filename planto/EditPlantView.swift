@@ -73,7 +73,7 @@ struct EditPlantView: View {
                             .font(.subheadline)
                         Spacer()
                         TextField("Enter name", text: $plantName)
-                            .multilineTextAlignment(.trailing)
+                            .multilineTextAlignment(.leading)
                             .foregroundColor(.secondary)
                             .font(.subheadline)
                     }
@@ -143,7 +143,7 @@ private struct GlassCard<Content: View>: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.primary.opacity(0.1), lineWidth: 1)
             )
-            .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 6)
+            
             .frame(height: height)
             .overlay(
                 VStack(spacing: 0) { content }

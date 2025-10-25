@@ -78,7 +78,7 @@ struct ReminderView: View {
                                 .foregroundColor(.white.opacity(0.9))
                             Spacer()
                             TextField("Pothos", text: $plantName)
-                                .multilineTextAlignment(.trailing)
+                                .multilineTextAlignment(.leading)
                                 .foregroundColor(.gray.opacity(0.8))
                                 .textFieldStyle(.plain)
                         }
@@ -127,7 +127,7 @@ private struct GlassCard<Content: View>: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(.white.opacity(0.1), lineWidth: 0.6)
             )
-            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 6)
+            
             .frame(height: height)
             .overlay(
                 VStack(spacing: 0) { content }
