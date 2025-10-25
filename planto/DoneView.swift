@@ -37,7 +37,7 @@ struct DoneView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 180, height: 180)
-
+                        .padding(.top, -100)
                     Text("All Done! 🎉")
                         .font(.title.bold())
                         .foregroundColor(.white)
