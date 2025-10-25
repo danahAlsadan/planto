@@ -27,7 +27,7 @@ struct DoneView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
-                .padding(.top, 40)
+                .padding(.top, 12)
 
                 Spacer()
 
@@ -60,7 +60,7 @@ struct DoneView: View {
                         Image(systemName: "plus")
                             .font(.system(size: 24, weight: .semibold))
                             .foregroundColor(.white)
-                            .frame(width: 56, height: 56)
+                            .frame(width: 45, height: 45)
                             .background(Color(hex: "22BA8C"))
                             .clipShape(Circle())
                             .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)

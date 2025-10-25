@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct PlantoApp: App {
-    @StateObject private var store = PlantsStore()
+    @StateObject private var store = PlantViewModel()
 
     var body: some Scene {
         WindowGroup {

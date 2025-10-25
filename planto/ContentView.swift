@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var showHome = false
     @State private var showList = false
-    @EnvironmentObject private var store: PlantsStore
+    @EnvironmentObject private var store: PlantViewModel
 
     var body: some View {
         ZStack {
@@ -108,5 +108,5 @@ private extension Color {
 
 #Preview {
     ContentView()
-        .environmentObject(PlantsStore())
+        .environmentObject(PlantViewModel())
 }

@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct PlantsListView: View {
-    @EnvironmentObject private var store: PlantsStore
+    @EnvironmentObject private var store: PlantViewModel
 
     @State private var showAdd = false
     @State private var editingPlant: Plant? = nil
@@ -120,7 +120,7 @@ struct PlantsListView: View {
                         Image(systemName: "plus")
                             .font(.system(size: 24, weight: .semibold))
                             .foregroundColor(.white)
-                            .frame(width: 56, height: 56)
+                            .frame(width: 45, height: 45)
                             .background(Color(hex: "22BA8C"))
                             .clipShape(Circle())
                             .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
@@ -262,5 +262,5 @@ private extension Color {
 }
 
 #Preview {
-    PlantsListView().environmentObject(PlantsStore())
+    PlantsListView().environmentObject(PlantViewModel())
 }
