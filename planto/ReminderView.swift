@@ -102,8 +102,8 @@ struct ReminderView: View {
                                     options: ["Every day", "Every 2 days", "Every 3 days",
                                               "Once a week", "Every 10 days", "Every 2 weeks"])
                             Divider().background(.white.opacity(0.1))
-                            MenuRow(icon: "drop", label: "Water", selection: $waterAmount,
-                                    options: ["10–20 ml", "20–50 ml", "50–100 ml", "100–200 ml"])
+               MenuRow(icon: "drop", label: "Water", selection: $waterAmount,
+                           options: ["20-50 ml", "50–100 ml", "100-200 ml", "200-300 ml"])
                         }
                     }
                 }

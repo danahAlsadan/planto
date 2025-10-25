@@ -99,7 +99,7 @@ struct EditPlantView: View {
                                          "Once a week", "Every 10 days", "Every 2 weeks"])
                         Divider().background(.primary.opacity(0.1))
                         MenuRow(icon: "drop", label: "Water", selection: $waterAmount,
-                                options: ["10–20 ml", "20–50 ml", "50–100 ml", "100–200 ml"])
+                       options: ["20-50 ml", "50-100 ml", "100-200 ml", "200-300 ml"])
                     }
                 }
 
