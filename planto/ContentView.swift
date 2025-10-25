@@ -14,55 +14,58 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            if showHome {
-            } else {
-                VStack {
+            Color.black.ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // MARK: - العنوان
+                VStack(alignment: .leading, spacing: 8) {
                     Text("My Plants 🌱")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 32)
-                        .padding(.top, 50)
-
+                        .font(.largeTitle.bold())
+                        .foregroundColor(.white)
+                        .padding(.top, 12)
+                    
                     Rectangle()
-                        .fill(Color.primary.opacity(0.1))
+                        .fill(Color.white.opacity(0.09))
                         .frame(height: 1)
-                        .padding(.horizontal, 32)
-
-                    Spacer()
                 }
-
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                
+                Spacer()
+                
+                // MARK: - المحتوى في المنتصف
                 VStack(spacing: 24) {
                     Image("plant_icon")
                         .resizable()
-                        .padding(.all, 0.237)
                         .scaledToFit()
                         .frame(width: 141, height: 233)
-
+                        .padding(.top, -100)
                     Text("Start your plant journey!")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
-                        .padding(.top, -20.61)
-
+                        .font(.title2.bold())
+                        .foregroundColor(.white)
+                        .padding(.top, -9)
                     Text("Now all your plants will be in one place and\nwe will help you take care of them :) 🪴")
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.7))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
-
-                    Button(action: { showHome = true }) {
-                        Text("Set Plant Reminder")
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: 280, height: 41)
-                            .background(Color(red: 92/255, green: 244/255, blue: 198/255))
-                            .cornerRadius(30)
-                            .padding([.top, .leading, .trailing], 50)
-                    }
                 }
+                .offset(y: -30)
+                
+                Spacer()
+                
+                // MARK: - الزر في الأسفل
+                Button(action: { showHome = true }) {
+                    Text("Set Plant Reminder")
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(Color(hex: "22BA8C"))
+                        .cornerRadius(25)
+                }
+                .padding(.horizontal, 50)
+                .padding(.bottom, 80)
             }
         }
         .sheet(isPresented: $showHome) {
@@ -79,7 +82,7 @@ struct ContentView: View {
                     showHome = false
                 }
             )
-            .presentationDetents([.fraction(0.99)])
+            .presentationDetents([.fraction(0.95)])
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(false)
         }

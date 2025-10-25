@@ -26,7 +26,7 @@ struct PlantsListView: View {
 
             VStack(alignment: .leading, spacing: 14) {
                 // MARK: Header
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 9) {
                     Text("My Plants 🌱")
                         .font(.largeTitle.bold())
                         .foregroundColor(.white)
