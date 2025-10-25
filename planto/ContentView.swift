@@ -18,7 +18,7 @@ struct ContentView: View {
             
             VStack(spacing: 0) {
                 // MARK: - العنوان
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 19) {
                     Text("My Plants 🌱")
                         .font(.largeTitle.bold())
                         .foregroundColor(.white)
@@ -39,12 +39,12 @@ struct ContentView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 141, height: 233)
-                        .padding(.top, -100)
+                        .padding(.top, -6)
                     Text("Start your plant journey!")
                         .font(.title2.bold())
                         .foregroundColor(.white)
                         .padding(.top, -9)
-                    Text("Now all your plants will be in one place and\nwe will help you take care of them :) 🪴")
+                    Text("Now all your plants will be in one place and\nwe will help you take care of them :)🪴")
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.7))
                         .multilineTextAlignment(.center)
@@ -65,7 +65,7 @@ struct ContentView: View {
                         .cornerRadius(25)
                 }
                 .padding(.horizontal, 50)
-                .padding(.bottom, 80)
+                .padding(.bottom, 190)
             }
         }
         .sheet(isPresented: $showHome) {
