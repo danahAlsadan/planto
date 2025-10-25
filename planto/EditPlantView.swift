@@ -138,7 +138,8 @@ private struct GlassCard<Content: View>: View {
     @ViewBuilder var content: Content
     var body: some View {
         RoundedRectangle(cornerRadius: 30, style: .continuous)
-            .fill(.ultraThinMaterial)
+          .fill(.ultraThinMaterial)
+            //
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.primary.opacity(0.1), lineWidth: 1)
