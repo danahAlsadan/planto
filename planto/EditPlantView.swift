@@ -22,7 +22,7 @@ struct EditPlantView: View {
 
     var body: some View {
         ZStack {
-
+            Color(hex: "1C1E1D").ignoresSafeArea()
             VStack(spacing: 30) {
                 // MARK: - Header
                 HStack {
@@ -139,7 +139,7 @@ private struct GlassCard<Content: View>: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 30, style: .continuous)
           .fill(.ultraThinMaterial)
-            //
+          
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.primary.opacity(0.1), lineWidth: 1)

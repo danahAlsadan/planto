@@ -11,7 +11,9 @@ struct PlantsListView: View {
 
     @State private var showAdd = false
     @State private var editingPlant: Plant? = nil
-    @State private var showDone = false
+    
+    var onAllDone: () -> Void = {}
+    var onAddNew: () -> Void = {}
 
     private var lovedCount: Int { store.plants.filter { $0.isWatered }.count }
     private var totalCount: Int { store.plants.count }
@@ -21,168 +23,150 @@ struct PlantsListView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
+        GeometryReader { geometry in
+            ZStack {
+                Color.black.ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: 14) {
-                // MARK: Header
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("My Plants 🌱")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(.white)
-                        .padding(.top, 12)
-
-                    Rectangle()
-                        .fill(Color.white.opacity(0.09))
-                        .frame(height: 1)
-                }
-
-                // MARK: Status + Progress
-                VStack(alignment: .leading, spacing: 14) {
-                    if lovedCount == 0 {
-                        Text("Your plants are waiting for a sip 💦")
-                            .foregroundColor(.white.opacity(0.9))
-                            .font(.subheadline.bold())
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.center)
-                    } else {
-                        Text("\(lovedCount) of your plants feel loved today ✨")
-                            .foregroundColor(.white.opacity(0.95))
-                            .font(.subheadline.bold())
-                            .frame(maxWidth: .infinity)
-                    }
-
-                    GeometryReader { geo in
-                        ZStack(alignment: .leading) {
-                            Capsule()
-                                .fill(Color.white.opacity(0.15))
-                                .frame(height: 8)
-
-                            Capsule()
-                                .fill(
-                                    LinearGradient(
-                                        colors: lovedCount == 0
-                                            ? [Color.white.opacity(0.2)]
-                                            : [Color(hex: "83FBD7"), Color(hex: "16C087")],
-                                        startPoint: .leading, endPoint: .trailing
-                                    )
-                                )
-                                .frame(width: geo.size.width * progress, height: 8)
-                                .animation(.spring(response: 0.4, dampingFraction: 0.9), value: progress)
-                        }
-                    }
-                    .frame(height: 8)
-                }
-                .padding(.top, 18)
-
-                // MARK: Plants List
-                List {
-                    ForEach(store.plants) { plant in
-                        PlantRowView(
-                            plant: plant,
-                            onToggle: {
-                                store.toggleWatered(for: plant)
-                                checkDone()
-                            },
-                            onTapName: {
-                                editingPlant = plant
-                            }
-                        )
-                        .listRowBackground(Color.black)
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button(role: .destructive) {
-                                store.deletePlant(plant)
-                                checkDone()
-                            } label: {
-                                Image(systemName: "trash")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .padding(10)
-                                    .background(Capsule().fill(Color.red))
-                                    .foregroundColor(.white)
-                            }
-                        }
-                    }
-                    .listRowSeparator(.hidden)
-                }
-                .scrollContentBackground(.hidden)
-                .listStyle(.plain)
-
-                Spacer(minLength: 12)
-            }
-            .padding(.horizontal, 20)
-
-            // MARK: Floating Add Button
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: { showAdd = true }) {
-                        Image(systemName: "plus")
-                            .font(.system(size: 24, weight: .semibold))
+                VStack(spacing: 0) {
+                    // MARK: - Header
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("My Plants 🌱")
+                            .font(.largeTitle.bold())
                             .foregroundColor(.white)
-                            .frame(width: 45, height: 45)
-                            .background(Color(hex: "22BA8C"))
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                            .padding(.top, 12)
+
+                        Rectangle()
+                            .fill(Color.white.opacity(0.1))
+                            .frame(height: 1)
+                            .padding(.trailing, 30)
                     }
-                    .padding(.trailing, 20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
+
+                    Spacer(minLength: geometry.size.height * 0.05) // 💚 نفس فراغ DoneView
+
+                    // MARK: - Status + Progress
+                    VStack(alignment: .leading, spacing: 14) {
+                        if lovedCount == 0 {
+                            Text("Your plants are waiting for a sip 💦")
+                                .foregroundColor(.white.opacity(0.9))
+                                .font(.subheadline.bold())
+                                .frame(maxWidth: .infinity)
+                                .multilineTextAlignment(.center)
+                        } else {
+                            Text("\(lovedCount) of your plants feel loved today ✨")
+                                .foregroundColor(.white.opacity(0.95))
+                                .font(.subheadline.bold())
+                                .frame(maxWidth: .infinity)
+                        }
+
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                Capsule()
+                                    .fill(Color.white.opacity(0.15))
+                                    .frame(height: 8)
+
+                                Capsule()
+                                    .fill(
+                                        LinearGradient(
+                                            colors: lovedCount == 0
+                                                ? [Color.white.opacity(0.2)]
+                                                : [Color(hex: "83FBD7"), Color(hex: "16C087")],
+                                            startPoint: .leading, endPoint: .trailing
+                                        )
+                                    )
+                                    .frame(width: geo.size.width * progress, height: 8)
+                                    .animation(.spring(response: 0.4, dampingFraction: 0.9), value: progress)
+                            }
+                        }
+                        .frame(height: 8)
+                    }
+                    .padding(.horizontal, 25)
                     .padding(.bottom, 20)
+
+                    // MARK: - Plants List
+                    List {
+                        ForEach(store.plants) { plant in
+                            PlantRowView(
+                                plant: plant,
+                                onToggle: {
+                                    store.toggleWatered(for: plant)
+                                    checkDone()
+                                },
+                                onTapName: { editingPlant = plant }
+                            )
+                            .listRowBackground(Color.black)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    store.deletePlant(plant)
+                                    checkDone()
+                                } label: {
+                                    Image(systemName: "trash")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .padding(10)
+                                        .background(Capsule().fill(Color.red))
+                                        .foregroundColor(.white)
+                                }
+                            }
+                        }
+                        .listRowSeparator(.hidden)
+                    }
+                    .scrollContentBackground(.hidden)
+                    .listStyle(.plain)
+                    .padding(.horizontal, 30)
+
+                    Spacer(minLength: geometry.size.height * 0.05) // 💚 نفس المسافة في DoneView
+                }
+
+                // MARK: - زر الإضافة (+)
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: { onAddNew() }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundColor(.white)
+                                .frame(width: 45, height: 45)
+                                .background(Color(hex: "22BA8C"))
+                                .clipShape(Circle())
+                                .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                        }
+                        .padding(.trailing, 30)
+                        .padding(.bottom, 40)
+                    }
                 }
             }
-        }
-        .onAppear { store.refreshDueWatering() }
-        .sheet(isPresented: $showAdd) {
-            ReminderView(
-                isPresented: $showAdd,
-                onSave: { newPlant in
-                    store.addPlant(newPlant)
-                    showAdd = false
-                },
-                onCancelToContent: { showAdd = false }
-            )
-            .presentationDetents([.fraction(0.95)])
-            .presentationDragIndicator(.visible)
-            .presentationCornerRadius(40)
-            .interactiveDismissDisabled(false)
-        }
-        .sheet(item: $editingPlant) { plant in
-            EditPlantView(
-                plant: plant,
-                onSave: { updated in
-                    store.updatePlant(updated)
-                    editingPlant = nil
-                },
-                onDelete: {
-                    store.deletePlant(plant)
-                    editingPlant = nil
-                }
-            )
-            .presentationDetents([.fraction(0.95)])
-            .presentationDragIndicator(.visible)
-            .presentationCornerRadius(40)
-            .interactiveDismissDisabled(false)
-        }
-        .fullScreenCover(isPresented: $showDone) {
-            DoneView {
-                showDone = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    showAdd = true
-                }
+            // MARK: - Edit Plant
+            .sheet(item: $editingPlant) { plant in
+                EditPlantView(
+                    plant: plant,
+                    onSave: { updated in
+                        store.updatePlant(updated)
+                        editingPlant = nil
+                    },
+                    onDelete: {
+                        store.deletePlant(plant)
+                        editingPlant = nil
+                        checkDone()
+                    }
+                )
+                .presentationDetents([.fraction(0.95)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(40)
+                .interactiveDismissDisabled(false)
             }
-            .environmentObject(store)
         }
     }
 
     private func checkDone() {
         if store.allWatered() {
-            showDone = true
-        } else {
-            showDone = false
+            onAllDone()
         }
     }
 }
 
-// MARK: Row
+// MARK: - Plant Row
 private struct PlantRowView: View {
     let plant: Plant
     let onToggle: () -> Void
@@ -215,7 +199,10 @@ private struct PlantRowView: View {
 
                 Button(action: onTapName) {
                     Text(plant.name)
-                        .font(.system(size: 26, weight: .semibold))
+                        .font(.system(size: 22, weight: .semibold))
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .minimumScaleFactor(0.8)
                         .foregroundColor(plant.isWatered ? Color.white.opacity(0.4) : .white)
                         .padding(.leading, 9)
                 }
@@ -249,7 +236,7 @@ private struct PlantRowView: View {
     }
 }
 
-// MARK: Color HEX Helper
+// MARK: - Color HEX Helper
 private extension Color {
     init(hex: String) {
         let s = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -261,8 +248,4 @@ private extension Color {
             blue: Double(int & 0xFF)/255
         )
     }
-}
-
-#Preview {
-    PlantsListView().environmentObject(PlantViewModel())
 }

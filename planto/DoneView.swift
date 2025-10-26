@@ -14,11 +14,12 @@ struct DoneView: View {
             Color.black.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // MARK: - العنوان في الأعلى
+                // MARK: - Header (يبقى نفسه)
                 VStack(alignment: .leading, spacing: 6) {
                     Text("My Plants 🌱")
                         .font(.largeTitle.bold())
                         .foregroundColor(.white)
+                        .padding(.top, 12)
 
                     Rectangle()
                         .fill(Color.white.opacity(0.1))
@@ -27,31 +28,33 @@ struct DoneView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
-                .padding(.top, 12)
 
-                Spacer()
+                Spacer(minLength: 40) // فراغ بسيط تحت العنوان
 
-                // MARK: - محتوى الصفحة في المنتصف (بدون ما يتحرك للأعلى)
-                VStack(spacing: 24) {
+                // MARK: - المحتوى الأساسي بالوسط تمامًا
+                VStack(spacing: 22) {
                     Image("All Done")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 180, height: 180)
-                        .padding(.top, -100)
-                    Text("All Done! 🎉")
-                        .font(.title.bold())
-                        .foregroundColor(.white)
+                        .padding(.bottom, 10)
+                        .padding(.top, -150)
+            Text("All Done! 🎉")
+               .font(.system(size: 28, weight: .bold))
+                   .foregroundColor(.white)
+                   .padding(.top, -2)
 
                     Text("All Reminders Completed")
-                        .font(.subheadline)
+                        .font(.system(size: 18))
                         .foregroundColor(.white.opacity(0.6))
                 }
-                .padding(.bottom, 100)
+                .frame(maxHeight: .infinity, alignment: .center) // مركز عاموديًا
+                .multilineTextAlignment(.center)
 
-                Spacer()
+                Spacer(minLength: 50)
             }
-            
-            // MARK: - زر الإضافة في الأسفل
+
+            // MARK: - زر الإضافة (+)
             VStack {
                 Spacer()
                 HStack {

@@ -21,7 +21,7 @@ struct ReminderView: View {
 
     var body: some View {
         ZStack {
-
+         Color(hex: "1C1E1D").ignoresSafeArea()
             VStack(spacing: 16) {
                 // MARK: - Header
                 HStack {
@@ -87,21 +87,21 @@ struct ReminderView: View {
                     // Room + Light (نفس منيو الإيدت)
                     GlassCard(height: 90) {
                         VStack(spacing: 0) {
-                            MenuRow(icon: "location", label: "Room", selection: $room,
-                                    options: ["Bedroom", "Living Room", "Kitchen", "Balcony", "Bathroom"])
-                            Divider().background(.white.opacity(0.1))
-                            MenuRow(icon: "sun.max", label: "Light", selection: $light,
-                                    options: ["Full sun", "Partial Sun", "Low light"])
+           MenuRow(icon: "location", label: "Room", selection: $room,
+          options: ["Bedroom", "Living Room", "Kitchen", "Balcony", "Bathroom"])
+               Divider().background(.white.opacity(0.1))
+           MenuRow(icon: "sun.max", label: "Light", selection: $light,
+           options: ["Full sun", "Partial Sun", "Low light"])
                         }
                     }
 
                     // Watering Days + Water (نفس منيو الإيدت)
                     GlassCard(height: 90) {
-                        VStack(spacing: 0) {
-                            MenuRow(icon: "drop", label: "Watering Days", selection: $wateringDays,
-                                    options: ["Every day", "Every 2 days", "Every 3 days",
-                                              "Once a week", "Every 10 days", "Every 2 weeks"])
-                            Divider().background(.white.opacity(0.1))
+               VStack(spacing: 0) {
+             MenuRow(icon: "drop", label: "Watering Days", selection: $wateringDays,
+                   options: ["Every day", "Every 2 days", "Every 3 days",
+             "Once a week", "Every 10 days", "Every 2 weeks"])
+                Divider().background(.white.opacity(0.1))
                MenuRow(icon: "drop", label: "Water", selection: $waterAmount,
                            options: ["20-50 ml", "50–100 ml", "100-200 ml", "200-300 ml"])
                         }

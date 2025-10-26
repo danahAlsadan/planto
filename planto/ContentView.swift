@@ -8,88 +8,100 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showHome = false
-    @State private var showList = false
     @EnvironmentObject private var store: PlantViewModel
+    
+    @State private var showReminder = false
+    @State private var showList = false
+    @State private var showDone = false
 
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                // MARK: - العنوان
-                VStack(alignment: .leading, spacing: 19) {
-                    Text("My Plants 🌱")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(.white)
-                        .padding(.top, 12)
+            // شاشة البداية
+            if !showList && !showDone {
+                VStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 19) {
+                        Text("My Plants 🌱")
+                            .font(.largeTitle.bold())
+                            .foregroundColor(.white)
+                            .padding(.top, 12)
+                        
+                        Rectangle()
+                            .fill(Color.white.opacity(0.09))
+                            .frame(height: 1)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
                     
-                    Rectangle()
-                        .fill(Color.white.opacity(0.09))
-                        .frame(height: 1)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
-                
-                Spacer()
-                
-                // MARK: - المحتوى في المنتصف
-                VStack(spacing: 24) {
-                    Image("plant_icon")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 141, height: 233)
-                        .padding(.top, -6)
-                    Text("Start your plant journey!")
-                        .font(.title2.bold())
-                        .foregroundColor(.white)
-                        .padding(.top, -9)
-                    Text("Now all your plants will be in one place and\nwe will help you take care of them :)🪴")
-                        .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.7))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 40)
-                }
-                .offset(y: -30)
-                
-                Spacer()
-                
-                // MARK: - الزر في الأسفل
-                Button(action: { showHome = true }) {
-                    Text("Set Plant Reminder")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color(hex: "22BA8C"))
-                        .cornerRadius(25)
-                }
+                    Spacer()
+                    
+                    VStack(spacing: 24) {
+                        Image("plant_icon")
+                            .resizable()
+                            .scaledToFit()
+                   .frame(width: 141, height: 233)
+            .padding(.top, -6)
+            Text("Start your plant journey!")
+                .font(.title2.bold())
+              .foregroundColor(.white)
+                    .padding(.top, -9)
+     Text("Now all your plants will be in one place and\nwe will help you take care of them :)🪴")
+                 .font(.subheadline)
+           .foregroundColor(.white.opacity(0.7))
+                .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                    }
+                    .offset(y: -30)
+                    
+                    Spacer()
+                    
+                    Button(action: { showReminder = true }) {
+             Text("Set Plant Reminder")
+                .fontWeight(.semibold)
+                 .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                 .frame(height: 50)
+                            .background(Color(hex: "22BA8C"))
+                            .cornerRadius(25)
+                    }
                 .padding(.horizontal, 50)
-                .padding(.bottom, 190)
+                    .padding(.bottom, 190)
+                }
+            }
+            
+            // شاشة قائمة النباتات
+            if showList && !showDone {
+                PlantsListView(
+                    onAllDone: { showDone = true },
+                    onAddNew: { showReminder = true }
+                )
+                .environmentObject(store)
+            }
+            
+            // شاشة DoneView
+            if showDone {
+                DoneView(onAddPlant: {
+                    showDone = false
+                    showReminder = true
+                })
             }
         }
-        .sheet(isPresented: $showHome) {
+        // شاشة الإضافة
+        .sheet(isPresented: $showReminder) {
             ReminderView(
-                isPresented: $showHome,
+                isPresented: $showReminder,
                 onSave: { newPlant in
                     store.addPlant(newPlant)
-                    showHome = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                        showList = true
-                    }
+                    showReminder = false
+                    showList = true
                 },
-                onCancelToContent: {
-                    showHome = false
-                }
+                onCancelToContent: { showReminder = false }
             )
             .presentationDetents([.fraction(0.95)])
             .presentationDragIndicator(.visible)
             .presentationCornerRadius(40)
             .interactiveDismissDisabled(false)
-        }
-        .fullScreenCover(isPresented: $showList) {
-            PlantsListView()
-                .environmentObject(store)
         }
     }
 }
@@ -108,6 +120,5 @@ private extension Color {
 }
 
 #Preview {
-    ContentView()
-        .environmentObject(PlantViewModel())
+    ContentView().environmentObject(PlantViewModel())
 }
