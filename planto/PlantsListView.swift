@@ -15,9 +15,10 @@ struct PlantsListView: View {
     var onAllDone: () -> Void = {}
     var onAddNew: () -> Void = {}
 
-    // ✅ التعديل هنا فقط
-    private var lovedCount: Int { store.plants.filter { !$0.isWatered }.isEmpty ? 0 : store.plants.filter { $0.isWatered }.count }
+    // ✅ عدد النباتات المسقاة وغير المسقاة
+    private var lovedCount: Int { store.plants.filter { $0.isWatered }.count }
     private var totalCount: Int { store.plants.count }
+    
     private var progress: CGFloat {
         guard totalCount > 0 else { return 0 }
         return CGFloat(lovedCount) / CGFloat(totalCount)
@@ -44,7 +45,7 @@ struct PlantsListView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
 
-                    Spacer(minLength: geometry.size.height * 0.05) // 💚 نفس فراغ DoneView
+                    Spacer(minLength: geometry.size.height * 0.05)
 
                     // MARK: - Status + Progress
                     VStack(alignment: .leading, spacing: 14) {
@@ -85,10 +86,9 @@ struct PlantsListView: View {
                     .padding(.horizontal, 25)
                     .padding(.bottom, 20)
 
-                    // MARK: - Plants List
+                    // MARK: - Plants List (عرض الكل لكن النبتة المسقاة تبقى باهتة)
                     List {
-                        // ✅ يخفي النباتات المسقاة مؤقتًا
-                        ForEach(store.plants.filter { !$0.isWatered }) { plant in
+                        ForEach(store.plants) { plant in
                             PlantRowView(
                                 plant: plant,
                                 onToggle: {
@@ -97,6 +97,8 @@ struct PlantsListView: View {
                                 },
                                 onTapName: { editingPlant = plant }
                             )
+                            .opacity(plant.isWatered ? 0.4 : 1.0) // ✅ تظل باهتة بعد التشيك
+                            .animation(.easeInOut, value: plant.isWatered)
                             .listRowBackground(Color.black)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                 Button(role: .destructive) {
@@ -117,7 +119,7 @@ struct PlantsListView: View {
                     .listStyle(.plain)
                     .padding(.horizontal, 30)
 
-                    Spacer(minLength: geometry.size.height * 0.05) // 💚 نفس المسافة في DoneView
+                    Spacer(minLength: geometry.size.height * 0.05)
                 }
 
                 // MARK: - زر الإضافة (+)
@@ -139,7 +141,7 @@ struct PlantsListView: View {
                     }
                 }
             }
-            // MARK: - Edit Plant
+            // MARK: - Edit Plant Sheet
             .sheet(item: $editingPlant) { plant in
                 EditPlantView(
                     plant: plant,
