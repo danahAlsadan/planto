@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 @MainActor
 final class PlantViewModel: ObservableObject {
@@ -16,11 +17,18 @@ final class PlantViewModel: ObservableObject {
     init() {
         loadPlants()
         refreshDueWatering()
+        requestNotificationPermission()
+
+        // 🔔 اختبار تلقائي عند فتح التطبيق (للتأكد من عمل الإشعارات)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.scheduleTestNotification()
+        }
     }
 
     func addPlant(_ plant: Plant) {
         plants.append(plant)
         savePlants()
+        scheduleTestNotification() // 🔔 إرسال إشعار بعد الإضافة
     }
 
     func updatePlant(_ plant: Plant) {
@@ -61,7 +69,6 @@ final class PlantViewModel: ObservableObject {
                     plants[i].isWatered = false
                 }
             } else {
-                // لم تُسقَ من قبل
                 plants[i].isWatered = false
             }
         }
@@ -78,6 +85,49 @@ final class PlantViewModel: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: saveKey),
            let decoded = try? JSONDecoder().decode([Plant].self, from: data) {
             plants = decoded
+        }
+    }
+}
+
+// MARK: - 🔔 Local Notification Extension
+extension PlantViewModel {
+    /// طلب إذن الإشعارات والتحقق من إعداد النظام
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+                    print(granted ? "✅ Notifications allowed" : "❌ Notifications denied")
+                }
+            case .denied:
+                print("🚫 Notifications are denied in Settings.")
+            case .authorized, .provisional, .ephemeral:
+                print("✅ Notifications already allowed")
+            @unknown default:
+                break
+            }
+        }
+    }
+
+    /// إرسال إشعار بعد 3 ثواني — حتى عند القفل (Background)
+    func scheduleTestNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Planto"
+        content.body = "Hey! let’s water your plant "
+        content.sound = UNNotificationSound.default
+
+        // بعد 3 ثواني بالضبط
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        let center = UNUserNotificationCenter.current()
+        center.add(request) { error in
+            if let error = error {
+                print("❌ Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("✅ Notification scheduled successfully")
+            }
         }
     }
 }
