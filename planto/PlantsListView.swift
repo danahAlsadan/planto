@@ -15,7 +15,8 @@ struct PlantsListView: View {
     var onAllDone: () -> Void = {}
     var onAddNew: () -> Void = {}
 
-    private var lovedCount: Int { store.plants.filter { $0.isWatered }.count }
+    // ✅ التعديل هنا فقط
+    private var lovedCount: Int { store.plants.filter { !$0.isWatered }.isEmpty ? 0 : store.plants.filter { $0.isWatered }.count }
     private var totalCount: Int { store.plants.count }
     private var progress: CGFloat {
         guard totalCount > 0 else { return 0 }
@@ -86,7 +87,7 @@ struct PlantsListView: View {
 
                     // MARK: - Plants List
                     List {
-                        // ✅ تعديل واحد فقط هنا: فلترة النباتات غير المسقاة
+                        // ✅ يخفي النباتات المسقاة مؤقتًا
                         ForEach(store.plants.filter { !$0.isWatered }) { plant in
                             PlantRowView(
                                 plant: plant,

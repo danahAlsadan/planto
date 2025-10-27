@@ -50,6 +50,7 @@ final class PlantViewModel: ObservableObject {
             plants[index].isWatered.toggle()
             if plants[index].isWatered {
                 plants[index].lastWatered = Date()
+                scheduleWateringReminder(for: plants[index]) // 🔔 تذكير حقيقي حسب التكرار
             }
             savePlants()
         }
@@ -134,6 +135,36 @@ extension PlantViewModel {
                 print("❌ Error scheduling notification: \(error.localizedDescription)")
             } else {
                 print("✅ Notification scheduled successfully")
+            }
+        }
+    }
+
+    /// 🔔 جدولة إشعار حقيقي للنبتة بناءً على تكرار السقي
+    func scheduleWateringReminder(for plant: Plant) {
+        guard let lastWatered = plant.lastWatered else { return }
+
+        // نحسب التاريخ القادم حسب عدد الأيام (repeatDaysInterval)
+        let nextDate = Calendar.current.date(byAdding: .day, value: plant.repeatDaysInterval, to: lastWatered) ?? Date()
+
+        let content = UNMutableNotificationContent()
+        content.title = "Time to water \(plant.name) 💧"
+        content.body = "Your \(plant.name) needs some love today 🌿"
+        content.sound = .default
+
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: nextDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+
+        let request = UNNotificationRequest(
+            identifier: "watering_\(plant.id.uuidString)",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("❌ Error scheduling reminder for \(plant.name): \(error.localizedDescription)")
+            } else {
+                print("✅ Reminder scheduled for \(plant.name) at \(nextDate)")
             }
         }
     }
