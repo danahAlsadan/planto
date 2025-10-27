@@ -86,7 +86,8 @@ struct PlantsListView: View {
 
                     // MARK: - Plants List
                     List {
-                        ForEach(store.plants) { plant in
+                        // ✅ تعديل واحد فقط هنا: فلترة النباتات غير المسقاة
+                        ForEach(store.plants.filter { !$0.isWatered }) { plant in
                             PlantRowView(
                                 plant: plant,
                                 onToggle: {

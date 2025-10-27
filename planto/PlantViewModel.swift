@@ -59,16 +59,23 @@ final class PlantViewModel: ObservableObject {
         !plants.isEmpty && plants.allSatisfy { $0.isWatered }
     }
 
+    // ✅ تعديل refreshDueWatering
     func refreshDueWatering() {
         let now = Date()
         for i in plants.indices {
             if let last = plants[i].lastWatered {
                 let gapDays = plants[i].repeatDaysInterval
-                if let due = Calendar.current.date(byAdding: .day, value: gapDays, to: last),
-                   now >= due {
-                    plants[i].isWatered = false
+                if let nextDue = Calendar.current.date(byAdding: .day, value: gapDays, to: last) {
+                    // إذا لم تمر المدة بعد → تبقى النبتة مخفية
+                    if now < nextDue {
+                        plants[i].isWatered = true
+                    } else {
+                        // المدة انتهت → ترجع تظهر
+                        plants[i].isWatered = false
+                    }
                 }
             } else {
+                // نبتة ما تم سقيها من قبل
                 plants[i].isWatered = false
             }
         }
