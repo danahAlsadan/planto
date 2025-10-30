@@ -21,21 +21,13 @@ You can set reminders, track watering schedules, and enjoy a sleek **glass-effec
 - **SwiftUI** – for declarative UI  
 - **MVVM Architecture** – clean and modular structure  
 - **UserNotifications** – for reminders  
-- **AppStorage / Codable** – for lightweight data persistence  
-- **iOS 17+ (fully compatible with iOS 18’s glassEffect)**  
+
+#Author
+
+[Danah Alsadan]
 
 
 
-🖥️ Screenshots
-
-| Reminder View | Plant List | Done View |
-
-| <img src="Assets/ReminderView.png" width="250"/> | <img src="Assets/PlantsListView.png" width="250"/> | <img src="Assets/DoneView.png" width="250"/> |
-
-*(replace with your actual screenshot paths if different)*
 
 
 
-⚙️ Installation
-
-1. Clone the repository:
