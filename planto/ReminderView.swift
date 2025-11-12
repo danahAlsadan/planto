@@ -48,7 +48,7 @@ struct ReminderView: View {
 
                     Button(action: {
                         // إنشاء Plant حسب الحقول
-                        let p = Plant(
+                let p = Plant(
                             name: plantName,
                             room: room,
                             light: light,
@@ -57,11 +57,11 @@ struct ReminderView: View {
                         )
                         onSave(p)
                     }) {
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 18, weight: .semibold))
+       Image(systemName: "checkmark")
+                  .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(width: 40, height: 40)
-                            .background(Color(hex: "22BA8C"))
+                .background(Color(hex: "22BA8C"))
                             .clipShape(Circle())
                     }
                 }
@@ -73,14 +73,14 @@ struct ReminderView: View {
                     // Plant Name
                     GlassCard(height: 48) {
                         HStack {
-                            Text("Plant Name")
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white.opacity(0.9))
-                            Spacer()
-                            TextField("Pothos", text: $plantName)
-                                .multilineTextAlignment(.leading)
-                                .foregroundColor(.gray.opacity(0.8))
-                                .textFieldStyle(.plain)
+                Text("Plant Name")
+                 .fontWeight(.semibold)
+               .foregroundColor(.white.opacity(0.9))
+                 Spacer()
+               TextField("Pothos", text: $plantName)
+           .multilineTextAlignment(.leading)
+               .foregroundColor(.gray.opacity(0.8))
+                      .textFieldStyle(.plain)
                         }
                     }
 

@@ -15,7 +15,7 @@ struct PlantsListView: View {
     var onAllDone: () -> Void = {}
     var onAddNew: () -> Void = {}
 
-    // ✅ عدد النباتات المسقاة وغير المسقاة
+
     private var lovedCount: Int { store.plants.filter { $0.isWatered }.count }
     private var totalCount: Int { store.plants.count }
     
@@ -69,12 +69,12 @@ struct PlantsListView: View {
                                     .frame(height: 8)
 
                                 Capsule()
-                                    .fill(
-                                        LinearGradient(
-                                            colors: lovedCount == 0
-                                                ? [Color.white.opacity(0.2)]
-                                                : [Color(hex: "83FBD7"), Color(hex: "16C087")],
-                                            startPoint: .leading, endPoint: .trailing
+                .fill(
+           LinearGradient(
+           colors: lovedCount == 0
+                          ? [Color.white.opacity(0.2)]
+           : [Color(hex: "83FBD7"), Color(hex: "16C087")],
+                           startPoint: .leading, endPoint: .trailing
                                         )
                                     )
                                     .frame(width: geo.size.width * progress, height: 8)
@@ -97,7 +97,7 @@ struct PlantsListView: View {
                                 },
                                 onTapName: { editingPlant = plant }
                             )
-                            .opacity(plant.isWatered ? 0.4 : 1.0) // ✅ تظل باهتة بعد التشيك
+                            .opacity(plant.isWatered ? 0.4 : 1.0) //  تظل باهتة بعد التشيك
                             .animation(.easeInOut, value: plant.isWatered)
                             .listRowBackground(Color.black)
                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -122,7 +122,7 @@ struct PlantsListView: View {
                     Spacer(minLength: geometry.size.height * 0.05)
                 }
 
-                // MARK: - زر الإضافة (+)
+                // MARK: - زر الإضافة 
                 VStack {
                     Spacer()
                     HStack {

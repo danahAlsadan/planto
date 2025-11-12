@@ -20,7 +20,7 @@ final class PlantViewModel: ObservableObject {
     }
 
     func addPlant(_ plant: Plant) {
-        // ✅ إذا كل النباتات كانت مسقاة (All Done)، نخفيها مؤقتاً
+        //  إذا كل النباتات كانت مسقاة (All Done)، نخفيها مؤقتاً
         if allWatered() {
             plants = plants.filter { !$0.isWatered }
         }
@@ -29,7 +29,7 @@ final class PlantViewModel: ObservableObject {
         plants.sort { $0.name < $1.name }
         savePlants()
 
-        // 🔔 إشعار بعد 3 ثواني بنفس النص المطلوب
+        //  إشعار بعد 3 ثواني بنفس النص المطلوب
         scheduleWateringNotification()
     }
 
@@ -54,7 +54,7 @@ final class PlantViewModel: ObservableObject {
         if plants[index].isWatered {
             plants[index].lastWatered = Date()
             scheduleReturn(for: plants[index])
-            scheduleWateringNotification() // 🔔 نفس النص بعد 3 ثواني
+            scheduleWateringNotification() //  نفس النص بعد 3 ثواني
         }
 
         savePlants()
@@ -78,7 +78,7 @@ final class PlantViewModel: ObservableObject {
         savePlants()
     }
 
-    // ✅ النبتة ترجع بعد وقتها المحدد
+    //  النبتة ترجع بعد وقتها المحدد
     private func scheduleReturn(for plant: Plant) {
         guard let last = plant.lastWatered else { return }
         let gapDays = plant.repeatDaysInterval
@@ -118,7 +118,7 @@ extension PlantViewModel {
         }
     }
 
-    // 🔔 إشعار ثابت بعد 3 ثوانٍ بنفس النص المطلوب
+    //  إشعار ثابت بعد 3 ثوانٍ بنفس النص المطلوب
     func scheduleWateringNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Planto"
