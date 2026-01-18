@@ -122,7 +122,7 @@ struct PlantsListView: View {
                     Spacer(minLength: geometry.size.height * 0.05)
                 }
 
-                // MARK: - زر الإضافة 
+                //  زر الإضافة
                 VStack {
                     Spacer()
                     HStack {
@@ -141,7 +141,7 @@ struct PlantsListView: View {
                     }
                 }
             }
-            // MARK: - Edit Plant Sheet
+            // Edit Plant Sheet
             .sheet(item: $editingPlant) { plant in
                 EditPlantView(
                     plant: plant,
@@ -170,7 +170,7 @@ struct PlantsListView: View {
     }
 }
 
-// MARK: - Plant Row
+// Plant Row
 private struct PlantRowView: View {
     let plant: Plant
     let onToggle: () -> Void
@@ -240,7 +240,7 @@ private struct PlantRowView: View {
     }
 }
 
-// MARK: - Color HEX Helper
+// Color HEX Helper
 private extension Color {
     init(hex: String) {
         let s = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

@@ -65,7 +65,7 @@ struct EditPlantView: View {
                 .padding(.horizontal, 5)
                 .padding(.top, 15)
 
-                // MARK: - Plant Name
+                //  Plant Name
                 GlassCard(height: 55) {
                     HStack {
                         Text("Plant Name")
@@ -80,7 +80,7 @@ struct EditPlantView: View {
                     .padding(.horizontal, 5)
                 }
 
-                // MARK: - Room + Light
+                // Room + Light
                 GlassCard(height: 90) {
                     VStack(spacing: 0) {
                         MenuRow(icon: "location", label: "Room", selection: $room,
@@ -91,7 +91,7 @@ struct EditPlantView: View {
                     }
                 }
 
-                // MARK: - Watering Days + Water
+                // Watering Days + Water
                 GlassCard(height: 90) {
                     VStack(spacing: 0) {
                         MenuRow(icon: "drop", label: "Watering Days", selection: $wateringDays,
@@ -103,7 +103,7 @@ struct EditPlantView: View {
                     }
                 }
 
-                // MARK: - Delete Button
+                // Delete Button
                 GlassCard(height: 55) {
                     Button(action: {
                         onDelete()
@@ -132,7 +132,7 @@ struct EditPlantView: View {
     }
 }
 
-// MARK: - GlassCard & MenuRow
+// GlassCard & MenuRow
 private struct GlassCard<Content: View>: View {
     var height: CGFloat
     @ViewBuilder var content: Content
@@ -185,7 +185,7 @@ private struct MenuRow: View {
     }
 }
 
-// MARK: - Color Helper
+//  Color Helper
 private extension Color {
     init(hex: String) {
         let s = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

@@ -68,7 +68,7 @@ struct ReminderView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
 
-                // MARK: - Glass Cards اسم النبته
+                //  Glass Cards اسم النبته
                 VStack(spacing: 35) {
                     // Plant Name
                     GlassCard(height: 48) {
@@ -116,7 +116,7 @@ struct ReminderView: View {
     }
 }
 
-// MARK: - GlassCard
+// GlassCard
 private struct GlassCard<Content: View>: View {
     var height: CGFloat
     @ViewBuilder var content: Content
@@ -136,7 +136,7 @@ private struct GlassCard<Content: View>: View {
     }
 }
 
-// MARK: - MenuRow
+// MenuRow
 private struct MenuRow: View {
     let icon: String
     let label: String
